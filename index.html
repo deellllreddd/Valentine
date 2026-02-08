@@ -168,7 +168,7 @@
     noBtn.addEventListener('click', () => {
       if (finished) return;
 
-      if (noClicks >= 2) {
+      if (noClicks >= 3) {
         showFinal('УРААА Я ТАК И ЗНАЛА!!!! 💘');
         return;
       }
@@ -179,7 +179,7 @@
       yesBtn.style.transform = `scale(${yesScale})`;
       noBtn.style.transform = `scale(${Math.max(noScale, 0)})`;
 
-      noBtn.textContent = noTexts[noClicks];
+      noBtn.textContent = noTexts[Math.min(noClicks, noTexts.length - 1)];
       noClicks++;
     });
   </script>
