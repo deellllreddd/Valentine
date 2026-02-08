@@ -170,6 +170,12 @@
     noBtn.addEventListener('click', () => {
       if (finished) return;
 
+      // если дошли до фразы "точно нет?" — любой выбор ведёт к финалу
+      if (noClickCount >= 2) {
+        showFinal('УРААА Я ТАК И ЗНАЛА!!!! 💘');
+        return;
+      }
+
       yesScale += 0.35;
       noScale -= 0.25;
 
@@ -180,9 +186,7 @@
         noBtn.textContent = noTexts[noClickCount];
       }
       noClickCount++;
-
-      if (noScale <= 0) {
-        showFinal('УРААА Я ТАК И ЗНАЛА!!!! 💘');
+    });
       }
     });
   </script>
