@@ -80,6 +80,12 @@
       to { transform: translateY(-120vh); opacity: 0; }
     }
 
+    @keyframes popIn {
+      0% { transform: scale(0.8); opacity: 0; }
+      60% { transform: scale(1.05); opacity: 1; }
+      100% { transform: scale(1); }
+    }
+
     .heart {
       position: fixed;
       bottom: -20px;
@@ -108,10 +114,11 @@
     let noScale = 1;
     let finished = false;
     let noClickCount = 0;
+    let yesClickCount = 0;
 
     const noTexts = [
       'матурым ты уверена?',
-      'может передумаешь?',
+      'может передумаешь..',
       'нажми ДАА',
       'нажми ДАА'
     ];
@@ -126,9 +133,8 @@
       setTimeout(() => heart.remove(), 4000);
     }
 
-    function startFinal() {
+    function showFinal(text) {
       finished = true;
-
       card.remove();
 
       const finalScreen = document.createElement('div');
@@ -139,17 +145,27 @@
       finalScreen.style.alignItems = 'center';
       finalScreen.style.justifyContent = 'center';
       finalScreen.style.textAlign = 'center';
-      finalScreen.style.fontSize = '30px';
+      finalScreen.style.fontSize = '28px';
       finalScreen.style.color = '#d63384';
       finalScreen.style.padding = '20px';
-      finalScreen.textContent = 'УРААА Я ТАК И ЗНАЛА!!!! 💘';
+      finalScreen.style.fontWeight = '600';
+      finalScreen.style.animation = 'popIn 0.6s ease-out';
+      finalScreen.textContent = text;
 
       document.body.appendChild(finalScreen);
-
       setInterval(createHeart, 200);
     }
 
-    yesBtn.addEventListener('click', startFinal);
+    yesBtn.addEventListener('click', () => {
+      if (finished) return;
+      yesClickCount++;
+
+      if (yesClickCount === 1) {
+        showFinal('ЙЕС ЙЕС, твой пирожочек счастлив!!! 💖');
+      } else {
+        showFinal('УРААА Я ТАК И ЗНАЛА!!!! 💘');
+      }
+    });
 
     noBtn.addEventListener('click', () => {
       if (finished) return;
@@ -166,7 +182,7 @@
       noClickCount++;
 
       if (noScale <= 0) {
-        startFinal();
+        showFinal('УРААА Я ТАК И ЗНАЛА!!!! 💘');
       }
     });
   </script>
