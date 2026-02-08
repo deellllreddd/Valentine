@@ -59,7 +59,7 @@
       border-radius: 999px;
       padding: 14px 22px;
       cursor: pointer;
-      transition: transform 0.3s ease, font-size 0.3s ease;
+      transition: transform 0.3s ease;
       min-width: 120px;
     }
 
@@ -96,7 +96,7 @@
 </head>
 <body>
   <div class="card" id="card">
-    <img src="cS1WCL.jpg" alt="котик с сердечками" />
+    <img src="cS1WCL.jpg" alt="котик" />
     <h1>AIDA LOVATO 💕<br>будешь ли ты моей валентинкой?</h1>
 
     <div class="buttons">
@@ -112,9 +112,8 @@
 
     let yesScale = 1;
     let noScale = 1;
+    let noClicks = 0;
     let finished = false;
-    let noClickCount = 0;
-    let yesClickCount = 0;
 
     const noTexts = [
       'матурым ты уверена?',
@@ -134,33 +133,32 @@
     }
 
     function showFinal(text) {
+      if (finished) return;
       finished = true;
+
       card.remove();
 
-      const finalScreen = document.createElement('div');
-      finalScreen.style.position = 'fixed';
-      finalScreen.style.inset = '0';
-      finalScreen.style.background = 'linear-gradient(180deg, #ffd6e8, #ff9acb)';
-      finalScreen.style.display = 'flex';
-      finalScreen.style.alignItems = 'center';
-      finalScreen.style.justifyContent = 'center';
-      finalScreen.style.textAlign = 'center';
-      finalScreen.style.fontSize = '28px';
-      finalScreen.style.color = '#d63384';
-      finalScreen.style.padding = '20px';
-      finalScreen.style.fontWeight = '600';
-      finalScreen.style.animation = 'popIn 0.6s ease-out';
-      finalScreen.textContent = text;
+      const screen = document.createElement('div');
+      screen.style.position = 'fixed';
+      screen.style.inset = '0';
+      screen.style.background = 'linear-gradient(180deg, #ffd6e8, #ff9acb)';
+      screen.style.display = 'flex';
+      screen.style.alignItems = 'center';
+      screen.style.justifyContent = 'center';
+      screen.style.textAlign = 'center';
+      screen.style.fontSize = '28px';
+      screen.style.color = '#d63384';
+      screen.style.fontWeight = '600';
+      screen.style.padding = '20px';
+      screen.style.animation = 'popIn 0.6s ease-out';
+      screen.textContent = text;
 
-      document.body.appendChild(finalScreen);
+      document.body.appendChild(screen);
       setInterval(createHeart, 200);
     }
 
     yesBtn.addEventListener('click', () => {
-      if (finished) return;
-      yesClickCount++;
-
-      if (yesClickCount === 1) {
+      if (noClicks === 0) {
         showFinal('ЙЕС ЙЕС, твой пирожочек счастлив!!! 💖');
       } else {
         showFinal('УРААА Я ТАК И ЗНАЛА!!!! 💘');
@@ -170,8 +168,7 @@
     noBtn.addEventListener('click', () => {
       if (finished) return;
 
-      // если дошли до фразы "точно нет?" — любой выбор ведёт к финалу
-      if (noClickCount >= 2) {
+      if (noClicks >= 2) {
         showFinal('УРААА Я ТАК И ЗНАЛА!!!! 💘');
         return;
       }
@@ -182,12 +179,8 @@
       yesBtn.style.transform = `scale(${yesScale})`;
       noBtn.style.transform = `scale(${Math.max(noScale, 0)})`;
 
-      if (noClickCount < noTexts.length) {
-        noBtn.textContent = noTexts[noClickCount];
-      }
-      noClickCount++;
-    });
-      }
+      noBtn.textContent = noTexts[noClicks];
+      noClicks++;
     });
   </script>
 </body>
