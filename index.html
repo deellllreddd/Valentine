@@ -74,16 +74,24 @@
       color: #a61c5b;
       font-size: 16px;
     }
+
+    @keyframes floatUp {
+      from { transform: translateY(0); opacity: 1; }
+      to { transform: translateY(-120vh); opacity: 0; }
+    }
+
+    .heart {
+      position: fixed;
+      bottom: -20px;
+      animation: floatUp 4s linear forwards;
+      pointer-events: none;
+    }
   </style>
 </head>
 <body>
-  <div class="card">
+  <div class="card" id="card">
     <img src="cS1WCL.jpg" alt="котик с сердечками" />
-
-    <h1>
-      AIDA LOVATO 💕<br />
-      будешь ли ты моей валентинкой?
-    </h1>
+    <h1>AIDA LOVATO 💕<br>будешь ли ты моей валентинкой?</h1>
 
     <div class="buttons">
       <button id="yesBtn">ДА 💖</button>
@@ -94,9 +102,12 @@
   <script>
     const yesBtn = document.getElementById('yesBtn');
     const noBtn = document.getElementById('noBtn');
+    const card = document.getElementById('card');
 
     let yesScale = 1;
     let noScale = 1;
+    let finished = false;
+    let noClickCount = 0;
 
     const noTexts = [
       'ты уверена?',
@@ -105,25 +116,40 @@
       'нажми ДАА'
     ];
 
-    let clickCount = 0;
-    let finished = false;
-
     function createHeart() {
       const heart = document.createElement('div');
+      heart.className = 'heart';
       heart.textContent = '💖';
-      heart.style.position = 'fixed';
       heart.style.left = Math.random() * 100 + 'vw';
-      heart.style.bottom = '-20px';
       heart.style.fontSize = Math.random() * 24 + 16 + 'px';
-      heart.style.animation = 'floatUp 4s linear forwards';
       document.body.appendChild(heart);
-
       setTimeout(() => heart.remove(), 4000);
     }
 
-    function startHearts() {
+    function startFinal() {
+      finished = true;
+
+      card.remove();
+
+      const finalScreen = document.createElement('div');
+      finalScreen.style.position = 'fixed';
+      finalScreen.style.inset = '0';
+      finalScreen.style.background = 'linear-gradient(180deg, #ffd6e8, #ff9acb)';
+      finalScreen.style.display = 'flex';
+      finalScreen.style.alignItems = 'center';
+      finalScreen.style.justifyContent = 'center';
+      finalScreen.style.textAlign = 'center';
+      finalScreen.style.fontSize = '30px';
+      finalScreen.style.color = '#d63384';
+      finalScreen.style.padding = '20px';
+      finalScreen.textContent = 'УРААА Я ТАК И ЗНАЛА!!!! 💘';
+
+      document.body.appendChild(finalScreen);
+
       setInterval(createHeart, 200);
     }
+
+    yesBtn.addEventListener('click', startFinal);
 
     noBtn.addEventListener('click', () => {
       if (finished) return;
@@ -134,59 +160,15 @@
       yesBtn.style.transform = `scale(${yesScale})`;
       noBtn.style.transform = `scale(${Math.max(noScale, 0)})`;
 
-      if (clickCount < noTexts.length) {
-        noBtn.textContent = noTexts[clickCount];
+      if (noClickCount < noTexts.length) {
+        noBtn.textContent = noTexts[noClickCount];
       }
-
-      clickCount++;
+      noClickCount++;
 
       if (noScale <= 0) {
-        noBtn.style.display = 'none';
-        yesBtn.style.position = 'fixed';
-        yesBtn.style.top = '0';
-        yesBtn.style.left = '0';
-        yesBtn.style.width = '100vw';
-        yesBtn.style.height = '100vh';
-        yesBtn.style.borderRadius = '0';
-        yesBtn.style.fontSize = '32px';
+        startFinal();
       }
-    });
-
-    yesBtn.addEventListener('click', () => {
-      if (finished) return;
-      finished = true;
-
-      startHearts();
-
-      yesBtn.style.position = 'fixed';
-      yesBtn.style.top = '0';
-      yesBtn.style.left = '0';
-      yesBtn.style.width = '100vw';
-      yesBtn.style.height = '100vh';
-      yesBtn.style.borderRadius = '0';
-      yesBtn.style.fontSize = '30px';
-
-      noBtn.style.display = 'none';
-
-      yesBtn.textContent = 'УРААА Я ТАК И ЗНАЛА!!!! 💘';
-    });
-
-      yesBtn.textContent = 'УРААА Я ТАК И ЗНАЛА!!!! 💘';
-      yesBtn.style.fontSize = '28px';
     });
   </script>
-
-  <style>
-    @keyframes floatUp {
-      from {
-        transform: translateY(0);
-        opacity: 1;
-      }
-      to {
-        transform: translateY(-120vh);
-        opacity: 0;
-      }
-    }
-  </style>
 </body>
 </html>
