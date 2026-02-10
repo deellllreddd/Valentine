@@ -1,15 +1,14 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Валентинка 💖</title>
 
 <style>
 * {
   box-sizing: border-box;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
-  -webkit-tap-highlight-color: transparent;
 }
 
 body {
@@ -26,7 +25,7 @@ body {
   background: #ffeaf3;
   padding: 16px;
   border-radius: 24px;
-  box-shadow: 0 20px 40px rgba(255, 105, 180, 0.35);
+  box-shadow: 0 20px 40px rgba(255,105,180,.35);
   text-align: center;
   width: 94vw;
   max-width: 420px;
@@ -43,54 +42,25 @@ img {
 h1 {
   color: #d63384;
   font-size: 20px;
-  margin-bottom: 12px;
   line-height: 1.3;
-}
-
-.buttons {
-  display: flex;
-  gap: 12px;
-  justify-content: center;
-  flex-wrap: wrap;
 }
 
 button {
   border: none;
   border-radius: 999px;
   padding: 14px 22px;
+  font-size: 16px;
   cursor: pointer;
-  transition: transform 0.3s ease;
-  min-width: 120px;
 }
 
 #yesBtn {
   background: #ff4fa3;
   color: white;
-  font-size: 18px;
 }
 
 #noBtn {
   background: #ffd1e6;
   color: #a61c5b;
-  font-size: 16px;
-}
-
-@keyframes floatUp {
-  from { transform: translateY(0); opacity: 1; }
-  to { transform: translateY(-120vh); opacity: 0; }
-}
-
-@keyframes popIn {
-  0% { transform: scale(0.8); opacity: 0; }
-  60% { transform: scale(1.05); opacity: 1; }
-  100% { transform: scale(1); }
-}
-
-.heart {
-  position: fixed;
-  bottom: -20px;
-  animation: floatUp 4s linear forwards;
-  pointer-events: none;
 }
 
 .final-screen {
@@ -103,7 +73,6 @@ button {
   justify-content: center;
   text-align: center;
   padding: 20px;
-  animation: popIn 0.6s ease-out;
 }
 
 .final-text {
@@ -114,28 +83,30 @@ button {
 .sub-text {
   font-size: 18px;
   color: #d63384;
-  margin-top: 8px;
+  margin-top: 6px;
 }
 
-.final-image {
-  max-width: 90%;
-  border-radius: 20px;
-  margin: 16px 0;
-}
-
-.options {
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
-  width: 100%;
-  max-width: 320px;
-}
 .option-btn {
-  padding: 14px;
-  font-size: 16px;
-  border-radius: 999px;
   background: #ff8fc7;
   color: white;
+  margin: 8px 0;
+}
+
+.next-btn {
+  background: #ff1493;
+  color: white;
+  margin-top: 12px;
+}
+
+.heart, .confetti {
+  position: fixed;
+  bottom: -20px;
+  animation: floatUp 4s linear forwards;
+  pointer-events: none;
+}
+
+@keyframes floatUp {
+  to { transform: translateY(-120vh); opacity: 0; }
 }
 </style>
 </head>
@@ -145,77 +116,68 @@ button {
 <div class="card" id="card">
   <img src="cS1WCL.jpg">
   <h1>AIDA LOVATO 💕<br>будешь ли ты моей валентинкой?</h1>
-  <div class="buttons">
-    <button id="yesBtn">ДА 💖</button>
-    <button id="noBtn">НЕТ</button>
-  </div>
+  <button id="yesBtn">ДА 💖</button>
+  <button id="noBtn">НЕТ</button>
 </div>
 
 <script>
-const yesBtn = document.getElementById('yesBtn');
-const noBtn = document.getElementById('noBtn');
 const card = document.getElementById('card');
-
-let noClicks = 0;
-let finished = false;
-
-const noTexts = ['ты уверена?','может передумаешь?','точно нет?','нажми ДАА'];
 
 function heart() {
   const h = document.createElement('div');
   h.className = 'heart';
-  h.textContent = '🎉';
+  h.textContent = '💖';
   h.style.left = Math.random()*100+'vw';
-  h.style.fontSize = '20px';
   document.body.appendChild(h);
   setTimeout(()=>h.remove(),4000);
 }
 
-function showFirstYesFlow(){
-  finished = true;
+function confetti() {
+  const c = document.createElement('div');
+  c.className = 'confetti';
+  c.textContent = '🎉';
+  c.style.left = Math.random()*100+'vw';
+  document.body.appendChild(c);
+  setTimeout(()=>c.remove(),4000);
+}
+
+document.getElementById('yesBtn').onclick = () => {
   card.remove();
   const s = document.createElement('div');
   s.className = 'final-screen';
   s.innerHTML = `
-    <h1 class="final-text">ЙЕС ЙЕС, твой пирожочек счастлив!!! 💖</h1>
-    <img src="photo_2026-02-10_17-46-06.jpg" class="final-image">
-    <p class="sub-text">А теперь выбери чем мы займемся на нашем втором свидании</p>
-    <button class="option-btn" onclick="showOptions()">ЖМИ</button>
+    <h1 class="final-text">ЙЕС ЙЕС, твой пирожочек доволен 💖</h1>
+    <img src="photo_2026-02-10_17-46-06.jpg">
+    <button class="next-btn" onclick="showOptions()">ЖМИ</button>
   `;
   document.body.appendChild(s);
   setInterval(heart,200);
-}
+};
 
-function showOptions(){
+function showOptions() {
   document.body.innerHTML = `
     <div class="final-screen">
-      <div class="options">
-        <button class="option-btn" onclick="final('photo_2026-02-10_18-36-33.jpg','СВИДАНИЕ ЗАБРОНИРОВАНО','Нам будет очень весело!!!!')">беговые лыжи</button>
-        <button class="option-btn" onclick="final('photo_2026-02-10_18-36-39.jpg','Матурым может еще подумаешь?','')">дамино</button>
-        <button class="option-btn" onclick="final('3f379a0b1edd16e1684cedc448226fe2.jpg','СВИДАНИЕ ЗАБРОНИРОВАНО','Жду не дождусь увидеть тебя в красивом наряде!!!')">диннер при свечах</button>
-        <button class="option-btn" onclick="final('photo_2026-02-10_18-35-39.jpg','СВИДАНИЕ ЗАБРОНИРОВАНО','Отличный выбор! Одежда на тебе будет ровно 2 минуты')">сизоринг</button>
-      </div>
+      <h1 class="final-text">Наше второе свидание 💕</h1>
+      <button class="option-btn" onclick="final('photo_2026-02-10_18-36-33.jpg','СВИДАНИЕ ЗАБРОНИРОВАНО','Нам будет очень весело!!!!')">беговые лыжи</button>
+      <button class="option-btn" onclick="final('photo_2026-02-10_18-36-39.jpg','Матурым может еще подумаешь?','')">дамино</button>
+      <button class="option-btn" onclick="final('3f379a0b1edd16e1684cedc448226fe2.jpg','СВИДАНИЕ ЗАБРОНИРОВАНО','Жду не дождусь увидеть тебя в красивом наряде!!!')">диннер при свечах</button>
+      <button class="option-btn" onclick="final('photo_2026-02-10_18-35-39.jpg','СВИДАНИЕ ЗАБРОНИРОВАНО','Отличный выбор! Одежда на тебе будет ровно 2 минуты')">сизоринг</button>
     </div>
   `;
+  setInterval(heart,200);
 }
 
 function final(img,text,sub){
   document.body.innerHTML = `
     <div class="final-screen">
       <h1 class="final-text">${text}</h1>
-      ${sub?`<p class="sub-text">${sub}</p>`:''}
-      <img src="${img}" class="final-image">
+      ${sub ? `<p class="sub-text">${sub}</p>` : ''}
+      <img src="${img}">
     </div>
   `;
-  setInterval(heart,150);
+  setInterval(confetti,150);
 }
-
-yesBtn.onclick = showFirstYesFlow;
-
-noBtn.onclick = () => {
-  noBtn.textContent = noTexts[Math.min(noClicks,noTexts.length-1)];
-  noClicks++;
-};
 </script>
+
 </body>
 </html>
