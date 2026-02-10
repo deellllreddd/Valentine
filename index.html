@@ -7,104 +7,116 @@
 
 <style>
 * {
-  box-sizing: border-box;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
+box-sizing: border-box;
+font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
 }
 
 body {
-  margin: 0;
-  height: 100vh;
-  background: linear-gradient(180deg, #ffd6e8, #ff9acb);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  overflow: hidden;
+margin: 0;
+height: 100vh;
+background: linear-gradient(180deg, #ffd6e8, #ff9acb);
+display: flex;
+align-items: center;
+justify-content: center;
+overflow: hidden;
 }
 
 .card {
-  background: #ffeaf3;
-  padding: 16px;
-  border-radius: 24px;
-  box-shadow: 0 20px 40px rgba(255,105,180,.35);
-  text-align: center;
-  width: 94vw;
-  max-width: 420px;
+background: #ffeaf3;
+padding: 16px;
+border-radius: 24px;
+box-shadow: 0 20px 40px rgba(255,105,180,.35);
+text-align: center;
+width: 94vw;
+max-width: 420px;
+position: relative;
 }
 
 img {
-  width: 100%;
-  max-height: 220px;
-  object-fit: cover;
-  border-radius: 20px;
-  margin: 12px 0;
+width: 100%;
+max-height: 220px;
+object-fit: cover;
+border-radius: 20px;
+margin: 12px 0;
 }
 
 h1 {
-  color: #d63384;
-  font-size: 20px;
+color: #d63384;
+font-size: 20px;
 }
 
 button {
-  border: none;
-  border-radius: 999px;
-  padding: 14px 22px;
-  font-size: 16px;
-  cursor: pointer;
+border: none;
+border-radius: 999px;
+padding: 14px 22px;
+font-size: 16px;
+cursor: pointer;
 }
 
 #yesBtn {
-  background: #ff4fa3;
-  color: white;
+background: #ff4fa3;
+color: white;
+position: relative;
+z-index: 2;
 }
 
 #noBtn {
-  background: #ffd1e6;
-  color: #a61c5b;
+background: #ffd1e6;
+color: #a61c5b;
+position: relative;
+z-index: 1;
 }
 
 .final-screen {
-  position: fixed;
-  inset: 0;
-  background: linear-gradient(180deg, #ffd6e8, #ff9acb);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  padding: 20px;
+position: fixed;
+inset: 0;
+background: linear-gradient(180deg, #ffd6e8, #ff9acb);
+display: flex;
+flex-direction: column;
+align-items: center;
+justify-content: center;
+text-align: center;
+padding: 20px;
 }
 
 .final-text {
-  font-size: 26px;
-  color: #d63384;
+font-size: 26px;
+color: #d63384;
 }
 
 .sub-text {
-  font-size: 18px;
-  color: #d63384;
+font-size: 18px;
+color: #d63384;
 }
 
 .option-btn {
-  background: #ff8fc7;
-  color: white;
-  margin: 8px 0;
+background: #ff1493;
+color: white;
+margin: 8px 0;
+width: 260px;
 }
 
 .next-btn {
-  background: #ff1493;
-  color: white;
-  margin-top: 12px;
+background: #ff1493;
+color: white;
+margin-top: 12px;
+}
+
+.back-btn {
+background: #ffd1e6;
+color: #a61c5b;
+margin-top: 14px;
 }
 
 .heart, .confetti {
-  position: fixed;
-  bottom: -20px;
-  animation: floatUp 4s linear forwards;
-  pointer-events: none;
+position: fixed;
+bottom: -20px;
+animation: floatUp 4s linear forwards;
+pointer-events: none;
 }
 
 @keyframes floatUp {
-  to { transform: translateY(-120vh); opacity: 0; }
+to { transform: translateY(-120vh); opacity: 0; }
 }
 </style>
 </head>
@@ -112,13 +124,25 @@ button {
 <body>
 
 <div class="card" id="card">
-  <img src="cS1WCL.jpg">
-  <h1>AIDA LOVATO 💕<br>будешь ли ты моей валентинкой?</h1>
-  <button id="yesBtn">ДА 💖</button>
-  <button id="noBtn">НЕТ</button>
+<img src="cS1WCL.jpg">
+<h1>AIDA LOVATO 💕<br>будешь ли ты моей валентинкой?</h1>
+<button id="yesBtn">ДА 💖</button>
+<button id="noBtn">НЕТ</button>
 </div>
 
 <script>
+let historyStack = [];
+
+function saveState(html) {
+historyStack.push(html);
+}
+
+function goBack() {
+if (historyStack.length > 0) {
+document.body.innerHTML = historyStack.pop();
+}
+}
+
 const card = document.getElementById('card');
 const yesBtn = document.getElementById('yesBtn');
 const noBtn = document.getElementById('noBtn');
@@ -128,100 +152,119 @@ let yesScale = 1;
 let noScale = 1;
 
 const noTexts = [
-  'матурым ты уверена?',
-  'может передумаешь..',
-  'нажми ДАА'
+'матурым ты уверена?',
+'может передумаешь..',
+'точно нет?'
 ];
 
 function heart() {
-  const h = document.createElement('div');
-  h.className = 'heart';
-  h.textContent = '💖';
-  h.style.left = Math.random()*100+'vw';
-  document.body.appendChild(h);
-  setTimeout(()=>h.remove(),4000);
+const h = document.createElement('div');
+h.className = 'heart';
+h.textContent = '💖';
+h.style.left = Math.random()*100+'vw';
+document.body.appendChild(h);
+setTimeout(()=>h.remove(),4000);
 }
 
 function confetti() {
-  const c = document.createElement('div');
-  c.className = 'confetti';
-  c.textContent = '🎉';
-  c.style.left = Math.random()*100+'vw';
-  document.body.appendChild(c);
-  setTimeout(()=>c.remove(),4000);
+const c = document.createElement('div');
+c.className = 'confetti';
+c.textContent = '🎉';
+c.style.left = Math.random()*100+'vw';
+document.body.appendChild(c);
+setTimeout(()=>c.remove(),4000);
 }
 
-/* ---------- ДА (НЕ ТРОГАЕМ) ---------- */
+/* ---------- ДА ---------- */
 yesBtn.onclick = () => {
-  if (noClicks >= 3) {
-    showIKnew();
-    return;
-  }
+if (noClicks >= 3) {
+showIKnew();
+return;
+}
 
-  card.remove();
-  const s = document.createElement('div');
-  s.className = 'final-screen';
-  s.innerHTML = `
-    <h1 class="final-text">ЕС ЕС, твой пирожочек счастлив!!! 💖</h1>
-    <img src="photo_2026-02-10_17-46-06.jpg">
-    <button class="next-btn" onclick="showOptions()">ЖМИ</button>
-  `;
-  document.body.appendChild(s);
-  setInterval(heart,200);
+saveState(document.body.innerHTML);
+card.remove();
+
+const s = document.createElement('div');
+s.className = 'final-screen';
+s.innerHTML = `
+<h1 class="final-text">ЕС ЕС, твой пирожочек счастлив!!! 💖</h1>
+<img src="photo_2026-02-10_17-46-06.jpg">
+<button class="next-btn" onclick="showOptions()">ЖМИ</button>
+<button class="back-btn" onclick="goBack()">← Назад</button>
+`;
+document.body.appendChild(s);
+setInterval(heart,200);
 };
 
 /* ---------- НЕТ ---------- */
 noBtn.onclick = () => {
-  if (noClicks >= 3) {
-    showIKnew();
-    return;
-  }
+if (noClicks >= 3) {
+showIKnew();
+return;
+}
 
-  yesScale += 0.35;
-  noScale -= 0.25;
+yesScale += 0.35;
+noScale -= 0.25;
 
-  yesBtn.style.transform = `scale(${yesScale})`;
-  noBtn.style.transform = `scale(${Math.max(noScale,0)})`;
+yesBtn.style.transform = `scale(${yesScale})`;
+yesBtn.style.zIndex = 5;
 
-  noBtn.textContent = noTexts[noClicks];
-  noClicks++;
+noBtn.style.transform = `scale(${Math.max(noScale,0)})`;
+
+noBtn.textContent = noTexts[noClicks];
+noClicks++;
 };
 
 /* ---------- УРААА ---------- */
 function showIKnew() {
-  document.body.innerHTML = `
-    <div class="final-screen">
-      <h1 class="final-text">УРААА Я ТАК И ЗНАЛА!!!! 💘</h1>
-      <img src="i.jpg">
-      <button class="next-btn" onclick="showOptions()">ЖМИ</button>
-    </div>
-  `;
-  setInterval(heart,200);
+saveState(document.body.innerHTML);
+
+document.body.innerHTML = `
+<div class="final-screen">
+<h1 class="final-text">УРААА Я ТАК И ЗНАЛА!!!! 💘</h1>
+<img src="i.jpg">
+<button class="next-btn" onclick="showOptions()">ЖМИ</button>
+<button class="back-btn" onclick="goBack()">← Назад</button>
+</div>
+`;
+setInterval(heart,200);
 }
 
 /* ---------- ВАРИАНТЫ ---------- */
 function showOptions() {
-  document.body.innerHTML = `
-    <div class="final-screen">
-      <h1 class="final-text">Выбери наше второе свидание 💕</h1>
-      <button class="option-btn" onclick="final('photo_2026-02-10_18-36-33.jpg','СВИДАНИЕ ЗАБРОНИРОВАНО','Нам будет очень весело!!!!')">беговые лыжи</button>
-      <button class="option-btn" onclick="final('photo_2026-02-10_18-36-39.jpg','Матурым может еще подумаешь?','')">дамино</button>
-      <button class="option-btn" onclick="final('photo_2026-02-10_19-44-13.jpg','СВИДАНИЕ ЗАБРОНИРОВАНО','Жду не дождусь увидеть тебя в красивом наряде!!!')">диннер при свечах</button>
-      <button class="option-btn" onclick="final('photo_2026-02-10_19-44-14.jpg','СВИДАНИЕ ЗАБРОНИРОВАНО','Отличный выбор! Одежда на тебе будет ровно 2 минуты')">сизоринг</button>
-    </div>
-  `;
-  setInterval(heart,200);
+saveState(document.body.innerHTML);
+
+document.body.innerHTML = `
+<div class="final-screen">
+<h1 class="final-text">Наше второе свидание 💕</h1>
+
+<button class="option-btn" onclick="final('photo_2026-02-10_18-36-33.jpg','СВИДАНИЕ ЗАБРОНИРОВАНО','Нам будет очень весело!!!!')">беговые лыжи</button>
+
+<button class="option-btn" onclick="final('photo_2026-02-10_18-36-39.jpg','Матурым может еще подумаешь?','')">дамино</button>
+
+<button class="option-btn" onclick="final('photo_2026-02-10_19-44-13.jpg','СВИДАНИЕ ЗАБРОНИРОВАНО','Жду не дождусь увидеть тебя в красивом наряде!!!')">диннер при свечах</button>
+
+<button class="option-btn" onclick="final('photo_2026-02-10_19-44-14.jpg','СВИДАНИЕ ЗАБРОНИРОВАНО','Отличный выбор! Одежда на тебе будет ровно 2 минуты')">сизоринг</button>
+
+<button class="back-btn" onclick="goBack()">← Назад</button>
+</div>
+`;
+setInterval(heart,200);
 }
 
 function final(img,text,sub){
-  document.body.innerHTML = `
-    <div class="final-screen">
-      <h1 class="final-text">${text}</h1>
-      ${sub ? `<p class="sub-text">${sub}</p>` : ''}
-      <img src="${img}">
-    </div>
-  `;
-  setInterval(confetti,150);
+saveState(document.body.innerHTML);
+
+document.body.innerHTML = `
+<div class="final-screen">
+<h1 class="final-text">${text}</h1>
+${sub ? `<p class="sub-text">${sub}</p>` : ''}
+<img src="${img}">
+<button class="back-btn" onclick="goBack()">← Назад</button>
+</div>
+`;
+setInterval(confetti,150);
 }
 </script>
 
