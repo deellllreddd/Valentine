@@ -1,266 +1,177 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>Валентинка 💖</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Валентинка 💖</title>
 
-  <style>
-    * {
-      box-sizing: border-box;
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
-      -webkit-tap-highlight-color: transparent;
-    }
+<style>
+* {
+  box-sizing: border-box;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
+}
 
-    body {
-      margin: 0;
-      height: 100vh;
-      background: linear-gradient(180deg, #ffd6e8, #ff9acb);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      overflow: hidden;
-    }
+body {
+  margin: 0;
+  height: 100vh;
+  background: linear-gradient(180deg, #ffd6e8, #ff9acb);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
 
-    .card {
-      background: #ffeaf3;
-      padding: 16px;
-      border-radius: 24px;
-      box-shadow: 0 20px 40px rgba(255, 105, 180, 0.35);
-      text-align: center;
-      width: 94vw;
-      max-width: 420px;
-    }
+.card {
+  background: #ffeaf3;
+  padding: 18px;
+  border-radius: 24px;
+  box-shadow: 0 20px 40px rgba(255,105,180,0.35);
+  text-align: center;
+  width: 94vw;
+  max-width: 420px;
+}
 
-    img {
-      width: 100%;
-      max-height: 220px;
-      object-fit: cover;
-      border-radius: 20px;
-      margin-bottom: 12px;
-    }
+h1 {
+  color: #d63384;
+  font-size: 20px;
+  margin-bottom: 16px;
+}
 
-    h1 {
-      color: #d63384;
-      font-size: 20px;
-      margin-bottom: 12px;
-      line-height: 1.3;
-    }
+button {
+  border: none;
+  border-radius: 999px;
+  padding: 14px 22px;
+  cursor: pointer;
+  background: #ff4fa3;
+  color: white;
+  font-size: 18px;
+  margin: 8px;
+}
 
-    .buttons {
-      display: flex;
-      gap: 12px;
-      justify-content: center;
-      flex-wrap: wrap;
-    }
+.options button {
+  background: #ffd1e6;
+  color: #a61c5b;
+  font-size: 16px;
+  width: 100%;
+}
 
-    button {
-      border: none;
-      border-radius: 999px;
-      padding: 14px 22px;
-      cursor: pointer;
-      transition: transform 0.3s ease;
-      min-width: 120px;
-    }
+.result {
+  position: fixed;
+  inset: 0;
+  background: linear-gradient(180deg, #ffd6e8, #ff9acb);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 20px;
+  animation: pop 0.6s ease-out;
+}
 
-    #yesBtn {
-      background: #ff4fa3;
-      color: white;
-      font-size: 18px;
-    }
+.result img {
+  width: 100%;
+  max-width: 340px;
+  border-radius: 20px;
+  margin-bottom: 16px;
+}
 
-    #noBtn {
-      background: #ffd1e6;
-      color: #a61c5b;
-      font-size: 16px;
-    }
+.result h2 {
+  color: #d63384;
+  font-size: 28px;
+  margin-bottom: 8px;
+}
 
-    @keyframes floatUp {
-      from { transform: translateY(0); opacity: 1; }
-      to { transform: translateY(-120vh); opacity: 0; }
-    }
+.result p {
+  color: #a61c5b;
+  font-size: 18px;
+}
 
-    @keyframes popIn {
-      0% { transform: scale(0.8); opacity: 0; }
-      60% { transform: scale(1.05); opacity: 1; }
-      100% { transform: scale(1); }
-    }
+@keyframes pop {
+  from { transform: scale(0.8); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
 
-    .heart {
-      position: fixed;
-      bottom: -20px;
-      animation: floatUp 4s linear forwards;
-      pointer-events: none;
-    }
+.firework {
+  position: fixed;
+  font-size: 20px;
+  animation: fly 2s ease-out forwards;
+  pointer-events: none;
+}
 
-    .final-screen {
-      position: fixed;
-      inset: 0;
-      background: linear-gradient(180deg, #ffd6e8, #ff9acb);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      padding: 20px;
-      animation: popIn 0.6s ease-out;
-    }
-
-    .final-text {
-      font-size: 26px;
-      color: #d63384;
-      margin-bottom: 12px;
-    }
-
-    .final-image {
-      max-width: 90%;
-      border-radius: 20px;
-      margin: 16px 0;
-    }
-
-    .next-text {
-      font-size: 18px;
-      color: #d63384;
-      margin-bottom: 12px;
-    }
-
-    .next-btn {
-      padding: 12px 22px;
-      font-size: 16px;
-      border-radius: 999px;
-      background: #ff4fa3;
-      color: white;
-    }
-
-    .options {
-      display: flex;
-      flex-direction: column;
-      gap: 14px;
-      width: 100%;
-      max-width: 320px;
-    }
-
-    .option-btn {
-      padding: 14px;
-      font-size: 16px;
-      border-radius: 999px;
-      background: #ff8fc7;
-      color: white;
-    }
-  </style>
+@keyframes fly {
+  from { transform: translateY(0); opacity: 1; }
+  to { transform: translateY(-120vh); opacity: 0; }
+}
+</style>
 </head>
 
 <body>
-  <div class="card" id="card">
-    <img src="cS1WCL.jpg" alt="котик">
-    <h1>AIDA LOVATO 💕<br>будешь ли ты моей валентинкой?</h1>
 
-    <div class="buttons">
-      <button id="yesBtn">ДА 💖</button>
-      <button id="noBtn">НЕТ</button>
-    </div>
+<div class="card" id="card">
+  <h1>Куда идём на свидание? 💕</h1>
+  <button onclick="showOptions()">ЖМИ 💖</button>
+
+  <div class="options" id="options" style="display:none;">
+    <button onclick="finalResult(1)">беговые лыжи</button>
+    <button onclick="finalResult(2)">дамино</button>
+    <button onclick="finalResult(3)">диннер при свечах</button>
+    <button onclick="finalResult(4)">сизоринг</button>
   </div>
+</div>
 
-  <script>
-    const yesBtn = document.getElementById('yesBtn');
-    const noBtn = document.getElementById('noBtn');
-    const card = document.getElementById('card');
+<script>
+function showOptions() {
+  document.getElementById('options').style.display = 'block';
+}
 
-    let yesScale = 1;
-    let noScale = 1;
-    let noClicks = 0;
-    let finished = false;
+function firework() {
+  const f = document.createElement('div');
+  f.className = 'firework';
+  f.textContent = '🎉✨';
+  f.style.left = Math.random() * 100 + 'vw';
+  f.style.bottom = '-20px';
+  document.body.appendChild(f);
+  setTimeout(() => f.remove(), 2000);
+}
 
-    const noTexts = [
-      'ты уверена?',
-      'может передумаешь?',
-      'точно нет?',
-      'нажми ДАА'
-    ];
+function finalResult(type) {
+  document.getElementById('card').remove();
 
-    function createHeart() {
-      const heart = document.createElement('div');
-      heart.className = 'heart';
-      heart.textContent = '💖';
-      heart.style.left = Math.random() * 100 + 'vw';
-      heart.style.fontSize = Math.random() * 24 + 16 + 'px';
-      document.body.appendChild(heart);
-      setTimeout(() => heart.remove(), 4000);
-    }
+  let img = '';
+  let title = 'СВИДАНИЕ ЗАБРОНИРОВАНО';
+  let text = '';
 
-    function showFinal(text) {
-      if (finished) return;
-      finished = true;
-      card.remove();
+  if (type === 1) {
+    img = 'option1.jpg';
+    text = 'Нам будет очень весело!!!!';
+  }
+  if (type === 2) {
+    img = 'option2.jpg';
+    title = 'Матурым, может еще подумаешь?';
+    text = '';
+  }
+  if (type === 3) {
+    img = 'option3.jpg';
+    text = 'Жду не дождусь увидеть тебя в красивом наряде!!!';
+  }
+  if (type === 4) {
+    img = 'option4.jpg';
+    text = 'Отличный выбор! Одежда на тебе будет ровно 2 минуты';
+  }
 
-      const screen = document.createElement('div');
-      screen.className = 'final-screen';
-      screen.innerHTML = `<h1 class="final-text">${text}</h1>`;
-      document.body.appendChild(screen);
+  const screen = document.createElement('div');
+  screen.className = 'result';
+  screen.innerHTML = `
+    <div>
+      <img src="${img}">
+      <h2>${title}</h2>
+      <p>${text}</p>
+    </div>
+  `;
+  document.body.appendChild(screen);
 
-      setInterval(createHeart, 200);
-    }
+  setInterval(firework, 250);
+}
+</script>
 
-    function showFirstYesFlow() {
-      finished = true;
-      card.remove();
-
-      const screen = document.createElement('div');
-      screen.className = 'final-screen';
-      screen.innerHTML = `<h1 class="final-text">ЙЕС ЙЕС, твой пирожочек счастлив!!! 💖</h1>`;
-      document.body.appendChild(screen);
-
-      setInterval(createHeart, 200);
-
-      setTimeout(() => {
-        screen.innerHTML = `
-          <h1 class="final-text">ЙЕС ЙЕС, твой пирожочек счастлив!!! 💖</h1>
-          <img src="photo_2026-02-10_17-46-06.jpg" class="final-image">
-          <p class="next-text">А теперь выбери чем мы займемся на нашем втором свидании</p>
-          <button class="next-btn" onclick="goToDatePage()">ЖМИ</button>
-        `;
-      }, 1200);
-    }
-
-    function goToDatePage() {
-      document.body.innerHTML = `
-        <div class="final-screen">
-          <h1 class="final-text">Наше второе свидание 💘</h1>
-          <div class="options">
-            <button class="option-btn">диннер при свечах</button>
-            <button class="option-btn">беговые лыжи</button>
-            <button class="option-btn">дамино</button>
-            <button class="option-btn">я ты лера паша</button>
-          </div>
-        </div>
-      `;
-    }
-
-    yesBtn.onclick = () => {
-      if (noClicks === 0) {
-        showFirstYesFlow();
-      } else {
-        showFinal('УРААА Я ТАК И ЗНАЛА!!!! 💘');
-      }
-    };
-
-    noBtn.onclick = () => {
-      if (finished) return;
-
-      if (noClicks >= 3) {
-        showFinal('УРААА Я ТАК И ЗНАЛА!!!! 💘');
-        return;
-      }
-
-      yesScale += 0.35;
-      noScale -= 0.25;
-
-      yesBtn.style.transform = `scale(${yesScale})`;
-      noBtn.style.transform = `scale(${Math.max(noScale, 0)})`;
-
-      noBtn.textContent = noTexts[Math.min(noClicks, noTexts.length - 1)];
-      noClicks++;
-    };
-  </script>
 </body>
 </html>
