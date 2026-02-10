@@ -36,13 +36,12 @@ img {
   max-height: 220px;
   object-fit: cover;
   border-radius: 20px;
-  margin-bottom: 12px;
+  margin: 12px 0;
 }
 
 h1 {
   color: #d63384;
   font-size: 20px;
-  line-height: 1.3;
 }
 
 button {
@@ -83,7 +82,6 @@ button {
 .sub-text {
   font-size: 18px;
   color: #d63384;
-  margin-top: 6px;
 }
 
 .option-btn {
@@ -122,6 +120,18 @@ button {
 
 <script>
 const card = document.getElementById('card');
+const yesBtn = document.getElementById('yesBtn');
+const noBtn = document.getElementById('noBtn');
+
+let noClicks = 0;
+let yesScale = 1;
+let noScale = 1;
+
+const noTexts = [
+  'ты уверена?',
+  'может передумаешь?',
+  'точно нет?'
+];
 
 function heart() {
   const h = document.createElement('div');
@@ -141,7 +151,13 @@ function confetti() {
   setTimeout(()=>c.remove(),4000);
 }
 
-document.getElementById('yesBtn').onclick = () => {
+/* ---------- ДА (НЕ ТРОГАЕМ) ---------- */
+yesBtn.onclick = () => {
+  if (noClicks >= 3) {
+    showIKnew();
+    return;
+  }
+
   card.remove();
   const s = document.createElement('div');
   s.className = 'final-screen';
@@ -154,6 +170,36 @@ document.getElementById('yesBtn').onclick = () => {
   setInterval(heart,200);
 };
 
+/* ---------- НЕТ ---------- */
+noBtn.onclick = () => {
+  if (noClicks >= 3) {
+    showIKnew();
+    return;
+  }
+
+  yesScale += 0.35;
+  noScale -= 0.25;
+
+  yesBtn.style.transform = `scale(${yesScale})`;
+  noBtn.style.transform = `scale(${Math.max(noScale,0)})`;
+
+  noBtn.textContent = noTexts[noClicks];
+  noClicks++;
+};
+
+/* ---------- УРААА ---------- */
+function showIKnew() {
+  document.body.innerHTML = `
+    <div class="final-screen">
+      <h1 class="final-text">УРААА Я ТАК И ЗНАЛА!!!! 💘</h1>
+      <img src="i.jpg">
+      <button class="next-btn" onclick="showOptions()">ЖМИ</button>
+    </div>
+  `;
+  setInterval(heart,200);
+}
+
+/* ---------- ВАРИАНТЫ ---------- */
 function showOptions() {
   document.body.innerHTML = `
     <div class="final-screen">
